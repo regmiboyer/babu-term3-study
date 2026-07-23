@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Year 9 Term 3 — Deep Study Plan</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=Racing+Sans+One&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ============ RED BULL RACING / F1 THEME ============ */
+:root{
+  --rb-navy:#0a0e2e;        /* Red Bull dark navy */
+  --rb-navy2:#141a4a;        /* lighter navy */
+  --rb-navy3:#1a2166;        /* highlight navy */
+  --rb-red:#ed1a3b;          /* Red Bull red */
+  --rb-red-dark:#a30f26;
+  --rb-yellow:#ffc906;       /* Red Bull yellow */
+  --rb-blue:#1e41ff;         /* Red Bull blue accent */
+  --bg:var(--rb-navy);
+  --panel:#0f1540;
+  --panel2:#181e5c;
+  --ink:#ffffff;
+  --mut:#a8b0e0;
+  --acc:var(--rb-yellow);
+  --acc2:var(--rb-red);
+  --warn:#ffcf6b;
+  --bad:#ff5a5a;
+  --line:#2a3080;
+  --math:#ffb400;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font:16.5px/1.55 'Titillium Web', system-ui, sans-serif;
+  color:var(--ink);
+  background:
+    linear-gradient(180deg, rgba(10,14,46,0.94), rgba(10,14,46,0.98)),
+    repeating-linear-gradient(135deg,
+      rgba(237,26,59,0.04) 0 30px,
+      transparent 30px 60px),
+    var(--rb-navy);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse at top left, rgba(237,26,59,0.10), transparent 45%),
+    radial-gradient(ellipse at bottom right, rgba(255,201,6,0.06), transparent 40%);
+}
+body::after{
+  content:"";position:fixed;top:0;left:0;right:0;height:6px;z-index:100;
+  background:
+    linear-gradient(90deg, var(--rb-red) 0 33%, var(--rb-yellow) 33% 66%, var(--rb-blue) 66% 100%);
+  box-shadow:0 2px 12px rgba(237,26,59,0.5);
+}
+header{
+  position:relative;z-index:2;
+  padding:16px 22px;
+  background:linear-gradient(90deg, var(--rb-navy) 0%, var(--rb-navy2) 50%, var(--rb-navy) 100%);
+  border-bottom:3px solid var(--rb-red);
+  display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+  box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+header h1{
+  font-family:'Racing Sans One', 'Titillium Web', sans-serif;
+  font-size:26.4px;margin:0;letter-spacing:2px;
+  color:#fff;
+  text-shadow:0 0 20px rgba(237,26,59,0.6), 2px 2px 0 var(--rb-red-dark);
+  text-transform:uppercase;
+}
+header h1::before{content:"🏁 ";}
+.grow{flex:1}
+.badge{
+  background:linear-gradient(135deg,var(--rb-red),var(--rb-red-dark));
+  color:#fff;padding:5px 12px;border-radius:4px;
+  font-size:13.2px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  box-shadow:0 2px 8px rgba(237,26,59,0.4);
+}
+.badge.yellow{background:linear-gradient(135deg,var(--rb-yellow),#e0a800);color:var(--rb-navy);}
+main{position:relative;z-index:1;display:grid;grid-template-columns:250px 1fr;min-height:calc(100vh - 66px)}
+nav{
+  background:linear-gradient(180deg, rgba(15,21,64,0.95), rgba(10,14,46,0.98));
+  border-right:2px solid var(--rb-red);
+  padding:16px 12px;overflow:auto;
+  backdrop-filter:blur(6px);
+}
+nav h3{
+  font-family:'Racing Sans One', sans-serif;
+  font-size:14.3px;letter-spacing:2px;
+  color:var(--rb-yellow);
+  margin:16px 6px 8px;
+  text-transform:uppercase;
+  border-bottom:1px solid var(--rb-red);
+  padding-bottom:4px;
+}
+nav button{
+  display:block;width:100%;text-align:left;
+  background:rgba(24,30,92,0.5);
+  border:1px solid transparent;border-left:3px solid transparent;
+  color:var(--ink);padding:10px 12px;margin:3px 0;border-radius:4px;
+  cursor:pointer;font:600 14.3px 'Titillium Web',sans-serif;
+  text-transform:uppercase;letter-spacing:0.5px;
+  transition:all .2s;
+}
+nav button:hover{
+  background:rgba(237,26,59,0.15);
+  border-left-color:var(--rb-yellow);
+  transform:translateX(2px);
+}
+nav button.active{
+  background:linear-gradient(90deg, rgba(237,26,59,0.25), transparent);
+  border-left-color:var(--rb-red);
+  color:var(--rb-yellow);
+  box-shadow:inset 0 0 20px rgba(237,26,59,0.15);
+}
+nav .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:middle;box-shadow:0 0 8px currentColor}
+section.content{padding:24px 28px;overflow:auto;position:relative;z-index:1}
+.card{
+  background:linear-gradient(135deg, rgba(24,30,92,0.85), rgba(15,21,64,0.9));
+  border:1px solid var(--line);
+  border-top:2px solid var(--rb-red);
+  border-radius:6px;padding:20px;margin:14px 0;
+  box-shadow:0 6px 20px rgba(0,0,0,0.35);
+  position:relative;
+}
+.card::before{
+  content:"";position:absolute;top:-2px;left:0;height:2px;width:80px;
+  background:var(--rb-yellow);
+  box-shadow:0 0 10px var(--rb-yellow);
+}
+.card h2{
+  margin:0 0 8px;font-size:24.2px;
+  font-family:'Racing Sans One', sans-serif;
+  color:#fff;letter-spacing:1px;text-transform:uppercase;
+  text-shadow:2px 2px 0 rgba(237,26,59,0.35);
+}
+.card h3{
+  margin:16px 0 6px;font-size:15.4px;
+  color:var(--rb-yellow);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;
+}
+.card p{margin:8px 0}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.pill{
+  background:rgba(24,30,92,0.8);
+  padding:4px 12px;border-radius:2px;font-size:12.1px;
+  color:var(--mut);font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  border-left:2px solid var(--line);
+}
+.pill.easy{color:var(--rb-yellow);border-left-color:var(--rb-yellow)}
+.pill.mid{color:#7ec8ff;border-left-color:#7ec8ff}
+.pill.hard{color:var(--rb-red);border-left-color:var(--rb-red)}
+.pill.math{color:var(--math);border-left-color:var(--math)}
+.progress{
+  height:10px;background:rgba(0,0,0,0.5);
+  border-radius:2px;overflow:hidden;margin:8px 0;
+  border:1px solid var(--line);position:relative;
+}
+.progress>div{
+  height:100%;
+  background:linear-gradient(90deg, var(--rb-red), var(--rb-yellow));
+  box-shadow:0 0 10px rgba(255,201,6,0.5);
+  transition:width .5s ease;
+}
+.days{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
+.day{
+  background:linear-gradient(160deg, rgba(24,30,92,0.9), rgba(10,14,46,0.9));
+  border:1px solid var(--line);
+  border-radius:4px;padding:12px;
+  position:relative;overflow:hidden;
+}
+.day::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:repeating-linear-gradient(90deg, var(--rb-red) 0 6px, transparent 6px 12px);
+}
+.day h4{
+  margin:6px 0 8px;font-size:15.4px;
+  color:var(--rb-yellow);text-transform:uppercase;letter-spacing:2px;
+  font-family:'Racing Sans One', sans-serif;
+}
+.sess{
+  background:rgba(10,14,46,0.7);
+  border-radius:3px;padding:10px 12px;margin:6px 0;
+  cursor:pointer;
+  border:1px solid transparent;border-left:3px solid var(--rb-red);
+  transition:all .2s;
+}
+.sess:hover{
+  border-color:var(--rb-yellow);
+  background:rgba(237,26,59,0.12);
+  transform:translateX(3px);
+}
+.sess.done{opacity:.5;text-decoration:line-through;border-left-color:var(--rb-yellow)}
+.sess.done::after{content:" ✓";color:var(--rb-yellow);font-weight:900}
+.sess .subj{font-weight:700;font-size:14.3px;text-transform:uppercase;letter-spacing:0.5px}
+.sess .top{font-size:13.2px;color:var(--mut);margin-top:2px}
+button.btn{
+  background:linear-gradient(135deg, var(--rb-red), var(--rb-red-dark));
+  color:#fff;border:0;padding:10px 18px;border-radius:3px;
+  cursor:pointer;font:700 14.3px 'Titillium Web',sans-serif;
+  text-transform:uppercase;letter-spacing:1.5px;
+  box-shadow:0 3px 10px rgba(237,26,59,0.4);
+  transition:all .2s;
+}
+button.btn:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(237,26,59,0.6)}
+button.btn.ghost{
+  background:transparent;color:var(--ink);
+  border:1px solid var(--rb-red);box-shadow:none;
+}
+button.btn.ghost:hover{background:rgba(237,26,59,0.15)}
+button.btn.small{padding:5px 12px;font-size:12.1px}
+button.btn.yellow{
+  background:linear-gradient(135deg, var(--rb-yellow), #d4a800);
+  color:var(--rb-navy);box-shadow:0 3px 10px rgba(255,201,6,0.4);
+}
+.check{display:flex;gap:8px;align-items:center;margin:6px 0;font-weight:600}
+.check input{accent-color:var(--rb-red);width:18px;height:18px}
+.flash{
+  perspective:1000px;width:100%;max-width:480px;height:180px;
+  margin:10px 12px 10px 0;display:inline-block;
+}
+.flash .inner{
+  position:relative;width:100%;height:100%;
+  transform-style:preserve-3d;transition:transform .6s;cursor:pointer;
+}
+.flash.flipped .inner{transform:rotateY(180deg)}
+.flash .face{
+  position:absolute;inset:0;backface-visibility:hidden;
+  border-radius:6px;padding:18px;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;font-size:15.4px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.4);
+}
+.flash .front{
+  background:linear-gradient(135deg, #1a2166 0%, #0a0e2e 60%, #ed1a3b 100%);
+  border:2px solid var(--rb-red);
+}
+.flash .front b{font-family:'Racing Sans One',sans-serif;font-size:19.8px;letter-spacing:1px}
+.flash .back{
+  background:linear-gradient(135deg, #ffc906 0%, #ed1a3b 100%);
+  color:var(--rb-navy);transform:rotateY(180deg);
+  border:2px solid var(--rb-yellow);font-weight:600;
+}
+.flash.recur .front{border-color:var(--rb-yellow);box-shadow:0 0 20px rgba(255,201,6,0.4)}
+.qopt{
+  display:block;width:100%;text-align:left;
+  background:rgba(24,30,92,0.6);
+  border:1px solid var(--line);border-left:3px solid transparent;
+  color:var(--ink);padding:12px 14px;border-radius:3px;
+  margin:8px 0;cursor:pointer;
+  font:600 15.4px 'Titillium Web',sans-serif;
+  transition:all .15s;
+}
+.qopt:hover{border-left-color:var(--rb-yellow);background:rgba(237,26,59,0.1)}
+.qopt.correct{border-left-color:var(--rb-yellow);background:linear-gradient(90deg,rgba(255,201,6,0.2),transparent);color:var(--rb-yellow)}
+.qopt.wrong{border-left-color:var(--rb-red);background:linear-gradient(90deg,rgba(237,26,59,0.2),transparent)}
+.qbox{
+  border-left:4px solid var(--rb-red);
+  padding:12px 16px;margin:16px 0;
+  background:rgba(24,30,92,0.4);border-radius:0 4px 4px 0;
+}
+.stat{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0}
+.stat>div{
+  background:linear-gradient(135deg, rgba(24,30,92,0.9), rgba(15,21,64,0.9));
+  padding:12px 18px;border-radius:4px;
+  border:1px solid var(--line);border-top:2px solid var(--rb-yellow);
+  min-width:110px;
+}
+.stat b{
+  color:var(--rb-red);font-size:28.6px;
+  font-family:'Racing Sans One',sans-serif;
+  display:block;line-height:1;
+  text-shadow:0 0 10px rgba(237,26,59,0.4);
+}
+.subj-tag{
+  display:inline-block;width:6px;height:24px;
+  border-radius:1px;margin-right:10px;vertical-align:middle;
+  box-shadow:0 0 8px currentColor;
+}
+kbd{
+  background:var(--panel2);padding:2px 8px;border-radius:3px;
+  font:600 12.1px 'JetBrains Mono',monospace;
+  border:1px solid var(--line);
+}
+.math-work{
+  background:linear-gradient(135deg, rgba(255,201,6,0.08), rgba(24,30,92,0.9));
+  border:1px solid var(--rb-yellow);border-left:4px solid var(--rb-yellow);
+  border-radius:4px;padding:14px 16px;margin:12px 0;
+  font-family:'JetBrains Mono', ui-monospace, monospace;
+  font-size:14.3px;line-height:1.7;
+}
+.math-work b{color:var(--rb-yellow);font-family:'Titillium Web',sans-serif}
+details{
+  background:rgba(24,30,92,0.5);
+  border:1px solid var(--line);border-left:3px solid var(--rb-yellow);
+  border-radius:3px;padding:12px 14px;margin:10px 0;
+}
+details summary{cursor:pointer;font-weight:700;color:var(--rb-yellow);text-transform:uppercase;letter-spacing:0.5px}
+.tag-recur{
+  background:var(--rb-yellow);color:var(--rb-navy);
+  font:900 11px 'Titillium Web',sans-serif;
+  padding:2px 8px;border-radius:2px;margin-left:6px;letter-spacing:1px;
+}
+svg.illus{display:block;margin:10px 0;max-width:100%;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.4))}
+
+/* checkered flag decorative element */
+.checker{
+  display:inline-block;width:60px;height:12px;vertical-align:middle;margin-left:8px;
+  background:
+    linear-gradient(45deg, #fff 25%, transparent 25%) 0 0/12px 12px,
+    linear-gradient(-45deg, #fff 25%, transparent 25%) 0 6px/12px 12px,
+    linear-gradient(45deg, transparent 75%, #fff 75%) 6px -6px/12px 12px,
+    linear-gradient(-45deg, transparent 75%, #fff 75%) 6px 0/12px 12px,
+    #000;
+}
+
+/* speed lines behind active section titles */
+@keyframes rev{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.speedbar{position:relative;overflow:hidden;height:3px;margin:8px 0;background:rgba(24,30,92,0.5);border-radius:2px}
+.speedbar::before{content:"";position:absolute;inset:0;width:40%;background:linear-gradient(90deg,transparent,var(--rb-red),var(--rb-yellow),transparent);animation:rev 2.5s linear infinite}
+
+/* driver number style for weeks */
+.driver-num{
+  display:inline-block;font-family:'Racing Sans One',sans-serif;
+  color:var(--rb-red);font-size:22px;margin-right:8px;
+  text-shadow:2px 2px 0 rgba(0,0,0,0.4);
+}
+
+/* Verstappen tribute footer strip */
+.max-strip{
+  position:fixed;bottom:0;left:0;right:0;height:24px;
+  background:linear-gradient(90deg, var(--rb-navy) 0%, var(--rb-red) 20%, var(--rb-navy) 40%, var(--rb-yellow) 60%, var(--rb-navy) 80%, var(--rb-red) 100%);
+  z-index:99;opacity:0.85;
+  display:flex;align-items:center;justify-content:center;
+  font:900 11px 'Titillium Web',sans-serif;letter-spacing:3px;
+  color:#fff;text-transform:uppercase;
+  border-top:1px solid rgba(255,255,255,0.15);
+}
+.max-strip::before{content:"⚡ VER · 1 · MAX VERSTAPPEN · REDBULL RACING · GIVE IT EVERYTHING · P1 ⚡"}
+main{padding-bottom:28px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Year 9 · Study Grand Prix</h1>
+  <span class="checker"></span>
+  <span class="badge yellow">Stage 5 · Term 3</span>
+  <span class="badge">🏆 #1 Focus</span>
+  <span class="grow"></span>
+  <span class="badge" id="overallPct">0%</span>
+  <button class="btn ghost small" onclick="resetAll()">Restart Race</button>
+</header>
+<main>
+  <nav>
+    <h3>🏁 Rounds</h3><div id="weekNav"></div>
+    <h3>🏎️ Teams</h3><div id="subjNav"></div>
+    <h3>⚙️ Garage</h3>
+    <button onclick="show('dashboard')">🏆 Championship</button>
+    <button onclick="show('flashcards')">🎴 Pit Cards</button>
+    <button onclick="show('mathdrill')">🧮 Time Trial</button>
+    <button onclick="show('assessments')">✅ Telemetry</button>
+  </nav>
+  <section class="content" id="view"></section>
+</main>
+<div class="max-strip"></div>
+
+<script src="data/english.js"></script>
+<script src="data/geography.js"></script>
+<script src="data/maths.js"></script>
+<script src="data/science.js"></script>
+
+<script>
+// ============================================================================
+// CONFIG
+// ============================================================================
+const SUBJECTS = {
+  english:  { name:"English — Speeches: Speaking Truth", color:"#7ec8ff",
+    task:"Multimedia speaking task on a social justice issue (due Week 9). Recorded video + written transcript.",
+    outcomes:["EN5-1A composes texts","EN5-2A effective language","EN5-3B responds to texts",
+              "EN5-5C thinks imaginatively","EN5-7D understands & appreciates","EN5-8D identifies values"] },
+  geography:{ name:"Geography — Shaping our Environment", color:"#7ee0a2",
+    task:"Fieldwork excursion + fieldwork booklet (Unit Task, due Week 9).",
+    outcomes:["GE5-1 physical processes","GE5-2 human-environment interconnections",
+              "GE5-3 spatial patterns","GE5-5 environmental management",
+              "GE5-7 acquires & processes info","GE5-8 communicates geographically"] },
+  maths:    { name:"Mathematics — Ethical Energy strand", color:"#c9a0ff",
+    task:"Contribute equations, graphs, and probability analysis to the Ethical Energy investigation.",
+    outcomes:["MA5.1-6NA linear relationships","MA5.2-9NA coordinate geometry",
+              "MA5.1-13SP probability","MA5.2-17SP chance","MA5.1-9MG area/perimeter",
+              "MA5.2-8NA equations","MA5.2-13MG right-angle trig"] },
+  science:  { name:"Science — Ethical Energy strand", color:"#ffcf6b",
+    task:"Design and run an energy investigation: hypothesis, method, data, analysis, ethical conclusion.",
+    outcomes:["SC5-6WS plans investigations","SC5-7WS conducts investigations","SC5-8WS analyses data",
+              "SC5-9WS communicates","SC5-11PW electricity & energy transfer",
+              "SC5-14LW dependence on energy sources"] }
+};
+
+// 3 sessions per day × Mon-Thu = 12 slots. Maths appears 3× per week; others 3× each.
+const SCHEDULE = {
+  Mon:["maths","english","science"],
+  Tue:["geography","maths","english"],
+  Wed:["science","geography","maths"],
+  Thu:["english","science","geography"]
+};
+
+// LESSONS come from data/*.js — merged here
+const LESSONS = {
+  english:   window.LESSONS_ENGLISH   || [],
+  geography: window.LESSONS_GEOGRAPHY || [],
+  maths:     window.LESSONS_MATHS     || [],
+  science:   window.LESSONS_SCIENCE   || []
+};
+
+// ============================================================================
+// STATE
+// ============================================================================
+const S = { current:{view:"week",week:1},
+            done:JSON.parse(localStorage.getItem("done_v2")||"{}"),
+            qResults:JSON.parse(localStorage.getItem("qres_v2")||"{}") };
+function save(){localStorage.setItem("done_v2",JSON.stringify(S.done));localStorage.setItem("qres_v2",JSON.stringify(S.qResults));refreshChrome()}
+function ky(s,w){return`${s}-w${w}`}
+function isDone(s,w){return!!S.done[ky(s,w)]}
+function toggle(s,w){S.done[ky(s,w)]=!S.done[ky(s,w)];save();render()}
+function overallPct(){let d=0,t=0;for(const s of Object.keys(SUBJECTS))for(let w=1;w<=10;w++){t++;if(isDone(s,w))d++}return t?Math.round(d/t*100):0}
+
+// ============================================================================
+// NAV
+// ============================================================================
+function refreshChrome(){
+  document.getElementById("overallPct").textContent=overallPct()+"% complete";
+  const wn=document.getElementById("weekNav");wn.innerHTML="";
+  for(let w=1;w<=10;w++){const b=document.createElement("button");b.innerHTML=`<span style="color:var(--rb-red);font-family:'Racing Sans One',sans-serif;margin-right:6px">R${w.toString().padStart(2,'0')}</span> Round ${w}`;
+    if(S.current.view==="week"&&S.current.week===w)b.classList.add("active");
+    b.onclick=()=>{S.current={view:"week",week:w};render()};wn.appendChild(b)}
+  const sn=document.getElementById("subjNav");sn.innerHTML="";
+  for(const[id,s]of Object.entries(SUBJECTS)){const b=document.createElement("button");
+    b.innerHTML=`<span class="dot" style="background:${s.color}"></span>${s.name.split(" — ")[0]}`;
+    if(S.current.view==="subject"&&S.current.subject===id)b.classList.add("active");
+    b.onclick=()=>{S.current={view:"subject",subject:id};render()};sn.appendChild(b)}
+}
+
+function render(){
+  refreshChrome();
+  const v=document.getElementById("view");
+  const view=S.current.view;
+  if(view==="week")return renderWeek(v,S.current.week);
+  if(view==="subject")return renderSubject(v,S.current.subject);
+  if(view==="lesson")return renderLesson(v,S.current.subject,S.current.week);
+  if(view==="dashboard")return renderDashboard(v);
+  if(view==="flashcards")return renderAllFlash(v);
+  if(view==="mathdrill")return renderMathDrill(v);
+  if(view==="assessments")return renderAssessments(v);
+}
+function show(v){S.current={view:v};render()}
+function openLesson(s,w){S.current={view:"lesson",subject:s,week:w};render()}
+
+// ============================================================================
+// WEEK
+// ============================================================================
+function renderWeek(v,w){
+  let done=0,total=0;
+  for(const s of Object.keys(SUBJECTS)){total++;if(isDone(s,w))done++}
+  const pct=Math.round(done/total*100);
+  let html=`<div class="card"><h2><span class="driver-num">R${w}</span>Round ${w} · Week ${w}</h2>
+    <div class="speedbar"></div>
+    <div class="row"><span class="pill ${w<=3?'easy':w<=7?'mid':'hard'}">${w<=3?'🟢 Practice · Foundation':w<=7?'🟡 Qualifying · Stage 5.1':'🔴 Race Day · Stage 5.2'}</span></div>
+    <div class="progress" style="margin-top:12px"><div style="width:${pct}%"></div></div>
+    <small style="color:var(--mut);letter-spacing:1px;text-transform:uppercase">Lap ${done}/${total} · Round Progress</small></div>`;
+  html+=`<div class="days">`;
+  for(const[day,subs]of Object.entries(SCHEDULE)){
+    html+=`<div class="day"><h4>${day}</h4>`;
+    for(const s of subs){
+      const L=LESSONS[s][w-1];if(!L){html+=`<div class="sess">${s} (missing)</div>`;continue}
+      const d=isDone(s,w);
+      html+=`<div class="sess ${d?'done':''}" onclick="openLesson('${s}',${w})">
+        <span class="subj-tag" style="background:${SUBJECTS[s].color}"></span>
+        <span class="subj">${SUBJECTS[s].name.split(" — ")[0]}</span>
+        <div class="top">${L.title}</div></div>`;
+    }
+    html+=`</div>`;
+  }
+  html+=`</div>`;
+  html+=`<div class="card"><h3>How to use this week</h3>
+    <p>Each subject appears 3× per week (Maths 4×). Read deeply, flip the flashcards, then take the 10-question assessment. Concepts recur — flashcards marked <span class="tag-recur">RECUR</span> revisit an earlier week's idea.</p></div>`;
+  v.innerHTML=html;
+}
+
+// ============================================================================
+// LESSON — deep reading + flashcards + 10Q assessment + math work
+// ============================================================================
+function renderLesson(v,s,w){
+  const subj=SUBJECTS[s], L=LESSONS[s][w-1], done=isDone(s,w);
+  let html=`<div class="card">
+    <button class="btn ghost small" onclick="S.current={view:'week',week:${w}};render()">← Back to Pit Lane</button>
+    <h2 style="margin-top:14px"><span class="subj-tag" style="background:${subj.color}"></span>${subj.name}</h2>
+    <div class="speedbar"></div>
+    <div class="row"><span class="pill">🏁 Round ${w}</span>
+      <span class="pill ${L.diff}">${L.diff==='easy'?'Foundation':L.diff==='mid'?'Stage 5.1':'Stage 5.2'}</span>
+      ${(L.outcomes||[]).map(o=>`<span class="pill">${o}</span>`).join("")}
+    </div></div>`;
+
+  html+=`<div class="card"><h2>📖 ${L.title}</h2>
+    <h3>Deep reading (${(L.read||"").split(" ").length} words)</h3>
+    <div>${L.read||""}</div>`;
+  if(L.keyIdeas){html+=`<h3>Key ideas — checklist</h3><ul>${L.keyIdeas.map(k=>`<li>${k}</li>`).join("")}</ul>`}
+  if(L.real){html+=`<h3>Real-life example</h3><p>${L.real}</p>`}
+  if(L.mathWork){html+=`<h3>Worked example (Maths)</h3><div class="math-work">${L.mathWork}</div>`}
+  if(L.activity){html+=`<h3>Try it now (10–15 min)</h3><p>${L.activity}</p>`}
+  html+=`</div>`;
+
+  if(L.illus){html+=`<div class="card"><h3>Illustration</h3>${L.illus}</div>`}
+
+  // Flashcards
+  html+=`<div class="card"><h3>🎴 Flashcards — click to flip</h3>
+    <p><small>Concepts marked <span class="tag-recur">RECUR</span> are revisited from earlier weeks so they stick.</small></p>`;
+  (L.flash||[]).forEach((f,i)=>{
+    const recur=f[2]?"recur":"";
+    html+=`<div class="flash ${recur}" id="fl-${s}-${w}-${i}" onclick="this.classList.toggle('flipped')">
+      <div class="inner">
+        <div class="face front"><div><b>${f[0]}</b>${f[2]?`<br><span class="tag-recur">RECUR from W${f[2]}</span>`:""}<br><small style="color:#9aa0d6">click to flip</small></div></div>
+        <div class="face back">${f[1]}</div></div></div>`;
+  });
+  html+=`</div>`;
+
+  // 10-question assessment
+  html+=`<div class="card"><h3>✅ 10-Question Assessment — this topic</h3>
+    <p><small>Answers are checked as you go. Score saved to your outcome tracker.</small></p>
+    <div id="qwrap-${s}-${w}"></div>
+    <div id="qscore-${s}-${w}" style="margin-top:12px;font-weight:600"></div>
+  </div>`;
+
+  // Home activity
+  if(L.home){html+=`<div class="card"><h3>🏠 Home activity</h3><p>${L.home}</p></div>`}
+
+  html+=`<div class="card"><h3>Finished this session?</h3>
+    <label class="check"><input type="checkbox" ${done?'checked':''} onchange="toggle('${s}',${w})"> Mark done</label></div>`;
+
+  v.innerHTML=html;
+  renderQuiz(s,w,L.quiz||[]);
+}
+
+function renderQuiz(s,w,qs){
+  const wrap=document.getElementById(`qwrap-${s}-${w}`); if(!wrap) return;
+  const stored=S.qResults[ky(s,w)]||{};
+  qs.forEach((q,i)=>{
+    const qid=`q-${s}-${w}-${i}`;
+    const prev=stored[i];
+    const box=document.createElement("div");box.className="qbox";
+    box.innerHTML=`<p><b>Q${i+1}.</b> ${q.q}</p>` +
+      q.opts.map((o,j)=>`<button class="qopt" data-i="${j}" ${prev!=null?"disabled":""}
+         ${prev!=null?(j===q.a?'style="border-color:#7ee0a2;background:#0f2a20"':(j===prev?'style="border-color:#ff8a8a;background:#2a0f13"':"")):""}>${o}</button>`).join("") +
+      (q.why?`<details><summary>Why?</summary><p>${q.why}</p></details>`:"");
+    wrap.appendChild(box);
+    box.querySelectorAll(".qopt").forEach(btn=>{
+      btn.onclick=()=>{
+        const chosen=+btn.dataset.i;
+        stored[i]=chosen; S.qResults[ky(s,w)]=stored; save();
+        box.querySelectorAll(".qopt").forEach((b,j)=>{b.disabled=true;
+          if(j===q.a)b.classList.add("correct");
+          if(j===chosen&&chosen!==q.a)b.classList.add("wrong");});
+        updateScore(s,w,qs);
+      };
+    });
+  });
+  updateScore(s,w,qs);
+}
+function updateScore(s,w,qs){
+  const stored=S.qResults[ky(s,w)]||{};
+  let correct=0, done=0;
+  qs.forEach((q,i)=>{if(stored[i]!=null){done++;if(stored[i]===q.a)correct++}});
+  const el=document.getElementById(`qscore-${s}-${w}`);
+  if(el) el.innerHTML = `Score: <span style="color:${correct===qs.length?'var(--acc)':'var(--acc2)'}">${correct} / ${qs.length}</span> (attempted ${done})`;
+}
+
+// ============================================================================
+// SUBJECT VIEW
+// ============================================================================
+function renderSubject(v,s){
+  const subj=SUBJECTS[s];
+  let html=`<div class="card">
+    <h2><span class="subj-tag" style="background:${subj.color}"></span>${subj.name}</h2>
+    <p><b>Term task:</b> ${subj.task}</p>
+    <h3>Outcomes assessed</h3><ul>${subj.outcomes.map(o=>`<li>${o}</li>`).join("")}</ul></div>`;
+  html+=`<div class="card"><h3>10-week roadmap</h3>`;
+  (LESSONS[s]||[]).forEach((L,i)=>{const w=i+1,d=isDone(s,w);
+    html+=`<div class="sess ${d?'done':''}" onclick="openLesson('${s}',${w})">
+      <span class="subj">Week ${w}: ${L.title}</span>
+      <div class="top"><span class="pill ${L.diff}">${L.diff==='easy'?'Foundation':L.diff==='mid'?'Stage 5.1':'Stage 5.2'}</span>
+      ${(L.outcomes||[]).map(o=>`<span class="pill">${o}</span>`).join(" ")}</div></div>`});
+  html+=`</div>`;
+  v.innerHTML=html;
+}
+
+// ============================================================================
+// DASHBOARD
+// ============================================================================
+function renderDashboard(v){
+  let done=0,correct=0,attempted=0,total=0;
+  for(const s of Object.keys(SUBJECTS))for(let w=1;w<=10;w++){total++;if(isDone(s,w))done++;
+    const r=S.qResults[ky(s,w)]||{};const L=LESSONS[s][w-1];if(!L)continue;
+    (L.quiz||[]).forEach((q,i)=>{if(r[i]!=null){attempted++;if(r[i]===q.a)correct++}});}
+  let html=`<div class="card"><h2>🏆 Championship Standings</h2><div class="speedbar"></div>
+    <div class="stat">
+      <div><b>${done}</b><small style="color:var(--mut);letter-spacing:1px;text-transform:uppercase">Laps completed</small><br><small>of ${total}</small></div>
+      <div><b>${correct}</b><small style="color:var(--mut);letter-spacing:1px;text-transform:uppercase">Fastest laps</small></div>
+      <div><b>${attempted}</b><small style="color:var(--mut);letter-spacing:1px;text-transform:uppercase">Attempts</small></div>
+      <div><b>${overallPct()}%</b><small style="color:var(--mut);letter-spacing:1px;text-transform:uppercase">Season</small></div>
+    </div></div>`;
+  for(const[id,subj]of Object.entries(SUBJECTS)){
+    let sd=0;for(let w=1;w<=10;w++)if(isDone(id,w))sd++;
+    const pct=Math.round(sd/10*100);
+    html+=`<div class="card">
+      <h3><span class="subj-tag" style="background:${subj.color}"></span>${subj.name}</h3>
+      <div class="progress"><div style="width:${pct}%"></div></div>
+      <small>${sd} of 10 weeks — ${pct}%</small></div>`;
+  }
+  v.innerHTML=html;
+}
+
+// ============================================================================
+// ALL FLASHCARDS
+// ============================================================================
+function renderAllFlash(v){
+  let html=`<div class="card"><h2>🎴 All flashcards</h2>
+    <p>Great for a 5-minute daily revision. Cards with <span class="tag-recur">RECUR</span> revisit earlier concepts.</p></div>`;
+  for(const[id,subj]of Object.entries(SUBJECTS)){
+    html+=`<div class="card"><h3><span class="subj-tag" style="background:${subj.color}"></span>${subj.name.split(" — ")[0]}</h3>`;
+    (LESSONS[id]||[]).forEach((L,wi)=>{
+      (L.flash||[]).forEach((f,fi)=>{
+        const idx=`all-${id}-${wi}-${fi}`;
+        html+=`<div class="flash ${f[2]?'recur':''}" id="${idx}" onclick="this.classList.toggle('flipped')">
+          <div class="inner">
+            <div class="face front"><div><b>${f[0]}</b><br><small style="color:#9aa0d6">Week ${wi+1}${f[2]?" · RECUR from W"+f[2]:""}</small></div></div>
+            <div class="face back">${f[1]}</div></div></div>`;
+      });
+    });
+    html+=`</div>`;
+  }
+  v.innerHTML=html;
+}
+
+// ============================================================================
+// MATH DRILL — quick reflex maths across all weeks
+// ============================================================================
+function renderMathDrill(v){
+  const bank=[];
+  (LESSONS.maths||[]).forEach((L,i)=>{(L.drill||[]).forEach(d=>bank.push({week:i+1,q:d[0],a:String(d[1])}))});
+  if(!bank.length){v.innerHTML=`<div class="card"><h2>🧮 Maths drill</h2><p>Loading…</p></div>`;return}
+  v.innerHTML=`<div class="card"><h2>🧮 Maths drill — 20 questions</h2>
+    <p>Type the answer and press Enter. Covers all 10 weeks. Refresh for a new set.</p>
+    <div id="mdq" style="font-size:20px;margin:14px 0"></div>
+    <input id="mdi" type="text" style="padding:10px;font-size:18px;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:8px;width:200px" autocomplete="off">
+    <div id="mdb" style="margin-top:12px"></div>
+    <div id="mds" style="margin-top:16px;font-weight:600"></div></div>`;
+  const set=[];while(set.length<Math.min(20,bank.length)){const p=bank[Math.floor(bank.length*(set.length/20)+ (bank.length/20)*Math.random())];if(!set.includes(p))set.push(p)}
+  let i=0,score=0;
+  const q=document.getElementById("mdq"),inp=document.getElementById("mdi"),fb=document.getElementById("mdb"),sc=document.getElementById("mds");
+  function nx(){
+    if(i>=set.length){q.textContent="Done!";inp.style.display="none";sc.innerHTML=`Final: <b>${score} / ${set.length}</b>`;return}
+    q.innerHTML=`<span style="color:var(--mut);font-size:12px">Q${i+1}/${set.length} · W${set[i].week}</span><br>${set[i].q}`;
+    inp.value="";inp.focus();fb.textContent="";
+  }
+  inp.onkeydown=e=>{
+    if(e.key!=="Enter")return;
+    const ans=inp.value.trim();const correct=set[i].a.trim();
+    const ok=ans===correct || Number(ans)===Number(correct);
+    if(ok){score++;fb.innerHTML=`<span style="color:var(--acc)">✓ Correct</span>`}
+    else{fb.innerHTML=`<span style="color:var(--bad)">✗ Answer was ${correct}</span>`}
+    sc.innerHTML=`Score so far: ${score} / ${i+1}`;
+    setTimeout(()=>{i++;nx()},900);
+  };
+  nx();
+}
+
+// ============================================================================
+// ASSESSMENTS OVERVIEW
+// ============================================================================
+function renderAssessments(v){
+  let html=`<div class="card"><h2>✅ Outcome checks</h2>
+    <p>Every topic has 10 assessment questions. Track your score per subject and per NESA outcome.</p></div>`;
+  for(const[id,subj]of Object.entries(SUBJECTS)){
+    html+=`<div class="card"><h3><span class="subj-tag" style="background:${subj.color}"></span>${subj.name}</h3>`;
+    let tCorrect=0,tTotal=0;
+    const byOutcome={};
+    (LESSONS[id]||[]).forEach((L,wi)=>{
+      const r=S.qResults[ky(id,wi+1)]||{};
+      let c=0,a=0;(L.quiz||[]).forEach((q,i)=>{if(r[i]!=null){a++;if(r[i]===q.a){c++;tCorrect++}}tTotal+=r[i]!=null?1:0});
+      tCorrect+=0;
+      (L.outcomes||[]).forEach(o=>{if(!byOutcome[o])byOutcome[o]={c:0,t:0};byOutcome[o].c+=c;byOutcome[o].t+=(L.quiz||[]).length});
+      const pct=(L.quiz||[]).length?Math.round(c/(L.quiz||[]).length*100):0;
+      html+=`<div style="margin:6px 0"><b>W${wi+1} · ${L.title}</b>
+        <div class="progress"><div style="width:${pct}%"></div></div>
+        <small>${c}/${(L.quiz||[]).length} correct · attempted ${a}</small></div>`;
+    });
+    html+=`<h3>By outcome</h3>`;
+    for(const[o,r]of Object.entries(byOutcome)){
+      const pct=r.t?Math.round(r.c/r.t*100):0;
+      html+=`<div style="margin:6px 0"><b>${o}</b>
+        <div class="progress"><div style="width:${pct}%"></div></div>
+        <small>${r.c} / ${r.t}</small></div>`;
+    }
+    html+=`</div>`;
+  }
+  v.innerHTML=html;
+}
+
+// ============================================================================
+// RESET + SELF-TEST
+// ============================================================================
+function resetAll(){if(!confirm("Wipe all progress?"))return;localStorage.clear();S.done={};S.qResults={};render()}
+
+function selfTest(){
+  console.assert(Object.keys(SUBJECTS).length===4,"4 subjects expected");
+  const flat=Object.values(SCHEDULE).flat();
+  console.assert(flat.length===12,"12 weekly slots");
+  const counts={};flat.forEach(s=>counts[s]=(counts[s]||0)+1);
+  ["english","geography","science","maths"].forEach(s=>console.assert(counts[s]===3,`${s} 3x per week`));
+  for(const s of Object.keys(SUBJECTS)){
+    const L=LESSONS[s];
+    if(!L||L.length!==10){console.warn(`${s} missing lessons: has ${L?L.length:0}`);continue}
+    L.forEach((l,i)=>{
+      console.assert(l.title&&l.read,`${s} W${i+1} missing content`);
+      console.assert((l.quiz||[]).length===10,`${s} W${i+1} needs 10 quiz Qs, has ${(l.quiz||[]).length}`);
+    });
+  }
+  console.log("selfTest complete");
+}
+window.addEventListener("load",()=>{selfTest();render()});
+</script>
+</body>
+</html>
