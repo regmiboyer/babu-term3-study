@@ -339,6 +339,95 @@ svg.illus{display:block;margin:10px 0;max-width:100%;filter:drop-shadow(0 4px 10
 }
 .max-strip::before{content:"⚡ VER · 1 · MAX VERSTAPPEN · REDBULL RACING · GIVE IT EVERYTHING · P1 ⚡"}
 main{padding-bottom:28px}
+
+/* ============ RED BULL CAR — one-time flypast, not constant loop ============ */
+@keyframes flypast {
+  0%   { transform: translateX(-15vw); opacity:0 }
+  8%   { opacity:1 }
+  92%  { opacity:1 }
+  100% { transform: translateX(105vw); opacity:0 }
+}
+@keyframes wheel { to { transform:rotate(360deg) } }
+@keyframes speedline {
+  0%   { transform:translateX(0);   opacity:0 }
+  10%  { opacity:.8 }
+  100% { transform:translateX(-80px); opacity:0 }
+}
+
+/* Background car: hidden by default; only appears when body has .car-run (added briefly on view change) */
+.bg-track {
+  position:fixed;
+  bottom:32px; left:0; right:0;
+  height:60px; pointer-events:none; z-index:5;
+  overflow:hidden;
+  display:none; /* hidden unless triggered */
+}
+body.car-run .bg-track { display:block }
+.bg-car {
+  position:absolute; bottom:0; left:-140px;
+  width:140px; height:60px;
+  animation: flypast 3.5s linear 1 both;
+}
+.bg-car .wheel { transform-origin:center; animation: wheel 0.15s linear infinite }
+.bg-car .line {
+  position:absolute; top:50%; right:100%; width:60px; height:2px;
+  background:linear-gradient(90deg, transparent, var(--rb-yellow));
+  animation: speedline 0.5s linear infinite;
+}
+.bg-car .line:nth-child(2){ top:35%; animation-delay:.1s; background:linear-gradient(90deg,transparent,var(--rb-red)) }
+.bg-car .line:nth-child(3){ top:65%; animation-delay:.2s }
+
+/* ============ PROGRESS-BAR CAR — sits at the tip of every progress bar ============ */
+.progress { position:relative; overflow:visible }
+.progress > div { position:relative; overflow:visible }
+.progress > div::after {
+  content:""; position:absolute; right:-14px; top:50%;
+  width:28px; height:14px; transform:translateY(-50%);
+  background:
+    radial-gradient(circle at 20% 60%, #111 4px, transparent 5px),
+    radial-gradient(circle at 80% 60%, #111 4px, transparent 5px),
+    linear-gradient(180deg, var(--rb-red) 0%, var(--rb-red-dark) 100%);
+  border-radius:6px 8px 4px 4px;
+  box-shadow:0 0 8px var(--rb-red), inset 0 -2px 0 rgba(0,0,0,.3);
+}
+.progress > div[style*="width:0%"]::after,
+.progress > div[style*="width: 0%"]::after { display:none }
+
+/* ============ TAIL LIGHT / done pulse ============ */
+/* Completed sessions: static tick, no wave */
+
+/* ============ HERO CAR — big animated marquee inside the week card ============ */
+.marquee-track {
+  position:relative; height:70px;
+  background:linear-gradient(180deg, transparent 0%, rgba(0,0,0,.4) 60%, rgba(0,0,0,.7) 100%);
+  border-radius:4px; overflow:hidden;
+  margin:14px 0 4px;
+  border:1px solid var(--line);
+}
+.marquee-track::before {
+  content:""; position:absolute; left:0; right:0; bottom:0; height:6px;
+  background:repeating-linear-gradient(90deg, #fff 0 30px, #111 30px 60px);
+  opacity:.9;
+  /* static — no animation */
+}
+.marquee-track::after {
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(ellipse at center bottom, rgba(255,201,6,0.08), transparent 60%);
+}
+/* Hero car sits parked on the track — no motion */
+.hero-car {
+  position:absolute; bottom:6px; left:50%; transform:translateX(-50%);
+  width:140px; height:56px;
+}
+/* Wheels no longer spin — parked */
+
+/* Kill remaining ambient motion: speed-bar sweep and Verstappen strip flicker */
+.speedbar::before { animation: none !important; width:100% !important; opacity:.4 }
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-car, .hero-car, .wheel, .speedbar::before, .max-strip { animation: none !important }
+}
+
 </style>
 </head>
 <body>
@@ -363,6 +452,39 @@ main{padding-bottom:28px}
   </nav>
   <section class="content" id="view"></section>
 </main>
+
+<!-- Background racing car — laps continuously behind everything -->
+<div class="bg-track" aria-hidden="true">
+  <div class="bg-car" id="bgCar">
+    <span class="line"></span><span class="line"></span><span class="line"></span>
+    <svg viewBox="0 0 140 60" class="body" width="140" height="60" xmlns="http://www.w3.org/2000/svg">
+      <!-- shadow -->
+      <ellipse cx="70" cy="56" rx="55" ry="3" fill="#000" opacity=".35"/>
+      <!-- rear wing -->
+      <rect x="4" y="18" width="14" height="18" rx="2" fill="#0a0e2e" stroke="#ed1a3b" stroke-width="1.2"/>
+      <rect x="2" y="16" width="18" height="3" fill="#ed1a3b"/>
+      <!-- sidepod / body -->
+      <path d="M18 40 L30 26 L92 24 L118 30 L124 40 L118 48 L26 48 Z" fill="#0a0e2e" stroke="#1e41ff" stroke-width="1"/>
+      <path d="M30 26 L92 24 L96 30 L34 32 Z" fill="#ed1a3b"/>
+      <!-- yellow stripe -->
+      <path d="M20 38 L118 34 L118 40 L20 44 Z" fill="#ffc906" opacity=".85"/>
+      <!-- cockpit halo -->
+      <path d="M56 24 Q62 12 78 12 Q90 12 92 22" stroke="#000" stroke-width="2.5" fill="none"/>
+      <ellipse cx="72" cy="22" rx="14" ry="6" fill="#000"/>
+      <!-- driver number 1 -->
+      <text x="70" y="38" text-anchor="middle" font-family="Racing Sans One, sans-serif" font-size="12" fill="#ffc906" font-weight="900">1</text>
+      <!-- front wing -->
+      <rect x="118" y="36" width="18" height="10" rx="2" fill="#0a0e2e" stroke="#ed1a3b" stroke-width="1"/>
+      <rect x="126" y="34" width="10" height="3" fill="#ed1a3b"/>
+      <!-- wheels -->
+      <circle class="wheel" cx="34" cy="48" r="8" fill="#111" stroke="#333" stroke-width="1.5"/>
+      <circle cx="34" cy="48" r="3" fill="#666"/>
+      <circle class="wheel" cx="110" cy="48" r="8" fill="#111" stroke="#333" stroke-width="1.5"/>
+      <circle cx="110" cy="48" r="3" fill="#666"/>
+    </svg>
+  </div>
+</div>
+
 <div class="max-strip"></div>
 
 <script src="data/english.js"></script>
@@ -396,12 +518,42 @@ const SUBJECTS = {
               "SC5-14LW dependence on energy sources"] }
 };
 
-// 3 sessions per day × Mon-Thu = 12 slots. Maths appears 3× per week; others 3× each.
+// 3 sessions per day × Mon-Thu = 12 slots. Each subject appears 3× per week — each appearance is a DIFFERENT session (Day A/B/C).
 const SCHEDULE = {
   Mon:["maths","english","science"],
   Tue:["geography","maths","english"],
   Wed:["science","geography","maths"],
   Thu:["english","science","geography"]
+};
+
+// Precompute: which A/B/C slot is this subject on this day? A = first appearance in week, B = second, C = third.
+const SUBJ_DAYS = {};
+Object.entries(SCHEDULE).forEach(([day, subs]) => {
+  subs.forEach(s => { (SUBJ_DAYS[s] = SUBJ_DAYS[s] || []).push(day); });
+});
+function dayLabelFor(subject, dayName){
+  const idx = (SUBJ_DAYS[subject]||[]).indexOf(dayName);
+  return idx>=0 ? ['A','B','C'][idx] : null;
+}
+function dayNameFor(subject, letter){
+  const idx = {A:0,B:1,C:2}[letter];
+  return (SUBJ_DAYS[subject]||[])[idx];
+}
+
+// Per-day slicing config — each day gets a distinct concept angle + fresh question set + fresh flashcards
+const DAY_META = {
+  A:{ label:"Concept Day", emoji:"🟢", tag:"easy",
+      brief:"New concept introduced. Learn the foundations from scratch.",
+      focus:"Core concept",
+      qSlice:[0,1,2,3], fcSlice:[0,1] },
+  B:{ label:"Application Day", emoji:"🟡", tag:"mid",
+      brief:"Different concept — how the topic works in the real world and worked examples.",
+      focus:"Applied concept",
+      qSlice:[4,5,6],   fcSlice:[2,3] },
+  C:{ label:"Mastery Day",     emoji:"🔴", tag:"hard",
+      brief:"Different concept — synthesis, evaluation, and challenge questions.",
+      focus:"Advanced concept",
+      qSlice:[7,8,9],   fcSlice:[4,5] } // last 2 flashcards for advanced
 };
 
 // LESSONS come from data/*.js — merged here
@@ -418,11 +570,34 @@ const LESSONS = {
 const S = { current:{view:"week",week:1},
             done:JSON.parse(localStorage.getItem("done_v2")||"{}"),
             qResults:JSON.parse(localStorage.getItem("qres_v2")||"{}") };
-function save(){localStorage.setItem("done_v2",JSON.stringify(S.done));localStorage.setItem("qres_v2",JSON.stringify(S.qResults));refreshChrome()}
-function ky(s,w){return`${s}-w${w}`}
-function isDone(s,w){return!!S.done[ky(s,w)]}
-function toggle(s,w){S.done[ky(s,w)]=!S.done[ky(s,w)];save();render()}
-function overallPct(){let d=0,t=0;for(const s of Object.keys(SUBJECTS))for(let w=1;w<=10;w++){t++;if(isDone(s,w))d++}return t?Math.round(d/t*100):0}
+function save(){localStorage.setItem("done_v3",JSON.stringify(S.done));localStorage.setItem("qres_v3",JSON.stringify(S.qResults));refreshChrome()}
+// Per-day session key: subject-week-day (A/B/C). Old ky() kept for aggregate views (any day counts subject-week as touched).
+function kyD(s,w,d){return`${s}-w${w}-${d}`}
+function ky(s,w){return`${s}-w${w}`} // legacy — used in aggregates below
+function isDoneDay(s,w,d){return!!S.done[kyD(s,w,d)]}
+function isDoneAnyDay(s,w){return ['A','B','C'].some(d=>isDoneDay(s,w,d))}
+function isDoneAllDays(s,w){return ['A','B','C'].every(d=>isDoneDay(s,w,d))}
+function toggleDay(s,w,d){
+  const wasDone = !!S.done[kyD(s,w,d)];
+  S.done[kyD(s,w,d)] = !wasDone;
+  save();
+  if(!wasDone) celebrate(); // brief car flypast only when completing (not un-completing)
+  render();
+}
+let celebrateTimer = null;
+function celebrate(){
+  document.body.classList.add('car-run');
+  // Restart animation cleanly
+  const car = document.getElementById('bgCar');
+  if(car){ car.style.animation='none'; void car.offsetWidth; car.style.animation=''; }
+  clearTimeout(celebrateTimer);
+  celebrateTimer = setTimeout(()=>document.body.classList.remove('car-run'), 3600);
+}
+function overallPct(){
+  let done=0, total=0;
+  for(const s of Object.keys(SUBJECTS)) for(let w=1;w<=10;w++) for(const d of ['A','B','C']){total++; if(isDoneDay(s,w,d)) done++;}
+  return total?Math.round(done/total*100):0;
+}
 
 // ============================================================================
 // NAV
@@ -446,98 +621,206 @@ function render(){
   const view=S.current.view;
   if(view==="week")return renderWeek(v,S.current.week);
   if(view==="subject")return renderSubject(v,S.current.subject);
-  if(view==="lesson")return renderLesson(v,S.current.subject,S.current.week);
+  if(view==="lesson")return renderLesson(v,S.current.subject,S.current.week,S.current.day||'A');
   if(view==="dashboard")return renderDashboard(v);
   if(view==="flashcards")return renderAllFlash(v);
   if(view==="mathdrill")return renderMathDrill(v);
   if(view==="assessments")return renderAssessments(v);
 }
 function show(v){S.current={view:v};render()}
-function openLesson(s,w){S.current={view:"lesson",subject:s,week:w};render()}
+function openLesson(s,w,d){S.current={view:"lesson",subject:s,week:w,day:d||'A'};render()}
 
 // ============================================================================
 // WEEK
 // ============================================================================
 function renderWeek(v,w){
+  // Count per-day session completion (12 sessions per week: 4 subjects × 3 days)
   let done=0,total=0;
-  for(const s of Object.keys(SUBJECTS)){total++;if(isDone(s,w))done++}
-  const pct=Math.round(done/total*100);
+  for(const[dayName,subs] of Object.entries(SCHEDULE)) for(const s of subs){
+    const letter = dayLabelFor(s, dayName);
+    if(!letter) continue;
+    total++; if(isDoneDay(s,w,letter)) done++;
+  }
+  const pct = total?Math.round(done/total*100):0;
   let html=`<div class="card"><h2><span class="driver-num">R${w}</span>Round ${w} · Week ${w}</h2>
     <div class="speedbar"></div>
     <div class="row"><span class="pill ${w<=3?'easy':w<=7?'mid':'hard'}">${w<=3?'🟢 Practice · Foundation':w<=7?'🟡 Qualifying · Stage 5.1':'🔴 Race Day · Stage 5.2'}</span></div>
-    <div class="progress" style="margin-top:12px"><div style="width:${pct}%"></div></div>
+    <div class="marquee-track" aria-hidden="true">
+      <div class="hero-car">
+        <svg viewBox="0 0 140 60" class="body" width="140" height="56" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="70" cy="56" rx="55" ry="3" fill="#000" opacity=".4"/>
+          <rect x="4" y="18" width="14" height="18" rx="2" fill="#0a0e2e" stroke="#ed1a3b" stroke-width="1.2"/>
+          <rect x="2" y="16" width="18" height="3" fill="#ed1a3b"/>
+          <path d="M18 40 L30 26 L92 24 L118 30 L124 40 L118 48 L26 48 Z" fill="#0a0e2e" stroke="#1e41ff" stroke-width="1"/>
+          <path d="M30 26 L92 24 L96 30 L34 32 Z" fill="#ed1a3b"/>
+          <path d="M20 38 L118 34 L118 40 L20 44 Z" fill="#ffc906" opacity=".85"/>
+          <path d="M56 24 Q62 12 78 12 Q90 12 92 22" stroke="#000" stroke-width="2.5" fill="none"/>
+          <ellipse cx="72" cy="22" rx="14" ry="6" fill="#000"/>
+          <text x="70" y="38" text-anchor="middle" font-family="Racing Sans One, sans-serif" font-size="12" fill="#ffc906" font-weight="900">1</text>
+          <rect x="118" y="36" width="18" height="10" rx="2" fill="#0a0e2e" stroke="#ed1a3b" stroke-width="1"/>
+          <rect x="126" y="34" width="10" height="3" fill="#ed1a3b"/>
+          <circle class="wheel" cx="34" cy="48" r="8" fill="#111" stroke="#333" stroke-width="1.5"/>
+          <circle cx="34" cy="48" r="3" fill="#666"/>
+          <circle class="wheel" cx="110" cy="48" r="8" fill="#111" stroke="#333" stroke-width="1.5"/>
+          <circle cx="110" cy="48" r="3" fill="#666"/>
+        </svg>
+      </div>
+    </div>
+    <div class="progress" style="margin-top:8px"><div style="width:${pct}%"></div></div>
     <small style="color:var(--mut);letter-spacing:1px;text-transform:uppercase">Lap ${done}/${total} · Round Progress</small></div>`;
   html+=`<div class="days">`;
-  for(const[day,subs]of Object.entries(SCHEDULE)){
-    html+=`<div class="day"><h4>${day}</h4>`;
+  for(const[dayName,subs] of Object.entries(SCHEDULE)){
+    html+=`<div class="day"><h4>${dayName}</h4>`;
     for(const s of subs){
-      const L=LESSONS[s][w-1];if(!L){html+=`<div class="sess">${s} (missing)</div>`;continue}
-      const d=isDone(s,w);
-      html+=`<div class="sess ${d?'done':''}" onclick="openLesson('${s}',${w})">
+      const L=LESSONS[s][w-1]; if(!L){html+=`<div class="sess">${s} (missing)</div>`;continue}
+      const letter = dayLabelFor(s, dayName);
+      const meta = DAY_META[letter];
+      const d = isDoneDay(s,w,letter);
+      html+=`<div class="sess ${d?'done':''}" onclick="openLesson('${s}',${w},'${letter}')">
         <span class="subj-tag" style="background:${SUBJECTS[s].color}"></span>
         <span class="subj">${SUBJECTS[s].name.split(" — ")[0]}</span>
-        <div class="top">${L.title}</div></div>`;
+        <div class="top">${meta.emoji} Day ${letter} · ${meta.label}</div>
+        <div class="top" style="opacity:.7">${L.title}</div></div>`;
     }
     html+=`</div>`;
   }
   html+=`</div>`;
-  html+=`<div class="card"><h3>How to use this week</h3>
-    <p>Each subject appears 3× per week (Maths 4×). Read deeply, flip the flashcards, then take the 10-question assessment. Concepts recur — flashcards marked <span class="tag-recur">RECUR</span> revisit an earlier week's idea.</p></div>`;
+  html+=`<div class="card"><h3>How this week works</h3>
+    <p>Each subject runs across 3 days as three different sessions:</p>
+    <ul style="margin:8px 0 8px 20px;padding:0">
+      <li>🟢 <b>Day A · Concept Lap</b> — foundations reading + first flashcards + questions 1–4</li>
+      <li>🟡 <b>Day B · Qualifying Lap</b> — deeper application + recur flashcards + questions 5–7</li>
+      <li>🔴 <b>Day C · Race Day</b> — synthesis + home challenge + full revision + questions 8–10</li>
+    </ul>
+    <p>Completing one day's session <b>only</b> completes that day. The other days stay open until you do them. Total per week: 12 sessions.</p></div>`;
   v.innerHTML=html;
 }
 
 // ============================================================================
 // LESSON — deep reading + flashcards + 10Q assessment + math work
 // ============================================================================
-function renderLesson(v,s,w){
-  const subj=SUBJECTS[s], L=LESSONS[s][w-1], done=isDone(s,w);
+function renderLesson(v,s,w,day){
+  const subj=SUBJECTS[s], L=LESSONS[s][w-1];
+  const meta = DAY_META[day] || DAY_META.A;
+  const done = isDoneDay(s,w,day);
+  const dayName = dayNameFor(s, day) || '—';
+
+  // Slice the content per day
+  const fullFlash = L.flash||[];
+  const flashSlice = meta.fcSlice ? meta.fcSlice.map(i=>fullFlash[i]).filter(Boolean) : fullFlash;
+  const fullQuiz = L.quiz||[];
+  const quizSlice = meta.qSlice.map(i=>fullQuiz[i]).filter(Boolean);
+  // Remap answer index to the sliced array so quiz still validates
+  const quizForDay = quizSlice.map(q => ({...q}));
+
   let html=`<div class="card">
     <button class="btn ghost small" onclick="S.current={view:'week',week:${w}};render()">← Back to Pit Lane</button>
     <h2 style="margin-top:14px"><span class="subj-tag" style="background:${subj.color}"></span>${subj.name}</h2>
     <div class="speedbar"></div>
-    <div class="row"><span class="pill">🏁 Round ${w}</span>
-      <span class="pill ${L.diff}">${L.diff==='easy'?'Foundation':L.diff==='mid'?'Stage 5.1':'Stage 5.2'}</span>
+    <div class="row">
+      <span class="pill">🏁 Round ${w}</span>
+      <span class="pill ${meta.tag}">${meta.emoji} Day ${day} · ${meta.label}</span>
+      <span class="pill">${dayName}</span>
       ${(L.outcomes||[]).map(o=>`<span class="pill">${o}</span>`).join("")}
-    </div></div>`;
-
-  html+=`<div class="card"><h2>📖 ${L.title}</h2>
-    <h3>Deep reading (${(L.read||"").split(" ").length} words)</h3>
-    <div>${L.read||""}</div>`;
-  if(L.keyIdeas){html+=`<h3>Key ideas — checklist</h3><ul>${L.keyIdeas.map(k=>`<li>${k}</li>`).join("")}</ul>`}
-  if(L.real){html+=`<h3>Real-life example</h3><p>${L.real}</p>`}
-  if(L.mathWork){html+=`<h3>Worked example (Maths)</h3><div class="math-work">${L.mathWork}</div>`}
-  if(L.activity){html+=`<h3>Try it now (10–15 min)</h3><p>${L.activity}</p>`}
-  html+=`</div>`;
-
-  if(L.illus){html+=`<div class="card"><h3>Illustration</h3>${L.illus}</div>`}
-
-  // Flashcards
-  html+=`<div class="card"><h3>🎴 Flashcards — click to flip</h3>
-    <p><small>Concepts marked <span class="tag-recur">RECUR</span> are revisited from earlier weeks so they stick.</small></p>`;
-  (L.flash||[]).forEach((f,i)=>{
-    const recur=f[2]?"recur":"";
-    html+=`<div class="flash ${recur}" id="fl-${s}-${w}-${i}" onclick="this.classList.toggle('flipped')">
-      <div class="inner">
-        <div class="face front"><div><b>${f[0]}</b>${f[2]?`<br><span class="tag-recur">RECUR from W${f[2]}</span>`:""}<br><small style="color:#9aa0d6">click to flip</small></div></div>
-        <div class="face back">${f[1]}</div></div></div>`;
-  });
-  html+=`</div>`;
-
-  // 10-question assessment
-  html+=`<div class="card"><h3>✅ 10-Question Assessment — this topic</h3>
-    <p><small>Answers are checked as you go. Score saved to your outcome tracker.</small></p>
-    <div id="qwrap-${s}-${w}"></div>
-    <div id="qscore-${s}-${w}" style="margin-top:12px;font-weight:600"></div>
+    </div>
+    <p style="margin-top:12px;color:var(--mut)">${meta.brief}</p>
   </div>`;
 
-  // Home activity
-  if(L.home){html+=`<div class="card"><h3>🏠 Home activity</h3><p>${L.home}</p></div>`}
+  // Each day introduces a different angle on the topic — no repetition across days.
+  html+=`<div class="card"><h2>📖 ${L.title} — Day ${day} · ${meta.focus}</h2>`;
+  if(day==='A'){
+    // Concept Day: full deep reading + key ideas — the new concept is introduced here.
+    html+=`<h3>Today's new concept — deep reading</h3><div>${L.read||""}</div>`;
+    if(L.keyIdeas){html+=`<h3>Key ideas from today</h3><ul>${L.keyIdeas.map(k=>`<li>${k}</li>`).join("")}</ul>`}
+    if(L.illus){html+=`<h3>Illustration</h3>${L.illus}</div><div class="card">`}
+  } else if(day==='B'){
+    // Application Day: NEW angle — real-world use + worked example + activity. No repeat of Day A reading.
+    html+=`<h3>Today's new concept — how it applies</h3>`;
+    html+=`<p style="color:var(--mut);font-size:13px">A different angle on <b>${L.title}</b>: instead of the definition, we learn how it plays out in practice.</p>`;
+    if(L.real){html+=`<h3>Real-world scenario</h3><p>${L.real}</p>`}
+    if(L.mathWork){html+=`<h3>Worked example — solve it step by step</h3><div class="math-work">${L.mathWork}</div>`}
+    if(L.activity){html+=`<h3>Practice drill (10–15 min)</h3><p>${L.activity}</p>`}
+    html+=`<h3>Quick recap of yesterday's core idea</h3>`;
+    if(L.keyIdeas){html+=`<ul>${L.keyIdeas.slice(0,3).map(k=>`<li>${k}</li>`).join("")}</ul>`}
+  } else { // C — Mastery Day
+    html+=`<h3>Today's new concept — mastery & synthesis</h3>`;
+    html+=`<p style="color:var(--mut);font-size:13px">A different angle again: pushing beyond application to evaluation and independent problem-solving.</p>`;
+    if(L.home){html+=`<h3>🏠 Home challenge — do this today</h3><p>${L.home}</p>`}
+    html+=`<h3>Extension thinking</h3>
+      <ul>
+        <li>Where else could this idea apply that we haven't covered?</li>
+        <li>What would break if one of the key assumptions changed?</li>
+        <li>How would you explain today's concept to a Year 7 student in 3 sentences?</li>
+      </ul>`;
+    html+=`<h3>Full topic revision</h3>
+      <p><small>All key ideas from the week:</small></p>`;
+    if(L.keyIdeas){html+=`<ul>${L.keyIdeas.map(k=>`<li>${k}</li>`).join("")}</ul>`}
+  }
+  html+=`</div>`;
 
-  html+=`<div class="card"><h3>Finished this session?</h3>
-    <label class="check"><input type="checkbox" ${done?'checked':''} onchange="toggle('${s}',${w})"> Mark done</label></div>`;
+  if(L.illus && day==='A'){html+=`<div class="card"><h3>Illustration</h3>${L.illus}</div>`}
+
+  // Flashcards — day-scoped slice
+  if(flashSlice.length){
+    html+=`<div class="card"><h3>🎴 Flashcards — Day ${day} set</h3>
+      <p><small>${day==='C'?"Full revision — every card from this topic.":"Focus set for today. Cards marked "}<span class="tag-recur">RECUR</span> revisit earlier concepts.</small></p>`;
+    flashSlice.forEach((f,i)=>{
+      const recur=f[2]?"recur":"";
+      html+=`<div class="flash ${recur}" id="fl-${s}-${w}-${day}-${i}" onclick="this.classList.toggle('flipped')">
+        <div class="inner">
+          <div class="face front"><div><b>${f[0]}</b>${f[2]?`<br><span class="tag-recur">RECUR from W${f[2]}</span>`:""}<br><small style="color:#a8b0e0">click to flip</small></div></div>
+          <div class="face back">${f[1]}</div></div></div>`;
+    });
+    html+=`</div>`;
+  }
+
+  // Day-scoped question set
+  html+=`<div class="card"><h3>✅ ${quizForDay.length}-Question Assessment — Day ${day}</h3>
+    <p><small>New set of questions for today. Score saved separately per day.</small></p>
+    <div id="qwrap-${s}-${w}-${day}"></div>
+    <div id="qscore-${s}-${w}-${day}" style="margin-top:12px;font-weight:600"></div>
+  </div>`;
+
+  html+=`<div class="card"><h3>Finished Day ${day}?</h3>
+    <p style="color:var(--mut);font-size:13px">Marking this complete only ticks off <b>${dayName} · Day ${day}</b>. Other days for this subject stay open until you sit them.</p>
+    <label class="check"><input type="checkbox" ${done?'checked':''} onchange="toggleDay('${s}',${w},'${day}')"> Complete Day ${day} session</label>
+  </div>`;
 
   v.innerHTML=html;
-  renderQuiz(s,w,L.quiz||[]);
+  renderQuizDay(s,w,day,quizForDay);
+}
+
+function renderQuizDay(s,w,day,qs){
+  const wrap=document.getElementById(`qwrap-${s}-${w}-${day}`); if(!wrap) return;
+  const storeKey = kyD(s,w,day);
+  const stored=S.qResults[storeKey]||{};
+  qs.forEach((q,i)=>{
+    const prev=stored[i];
+    const box=document.createElement("div");box.className="qbox";
+    box.innerHTML=`<p><b>Q${i+1}.</b> ${q.q}</p>` +
+      q.opts.map((o,j)=>`<button class="qopt" data-i="${j}" ${prev!=null?"disabled":""}
+         ${prev!=null?(j===q.a?'style="border-left-color:#ffc906;background:linear-gradient(90deg,rgba(255,201,6,0.2),transparent);color:#ffc906"':(j===prev?'style="border-left-color:#ed1a3b;background:linear-gradient(90deg,rgba(237,26,59,0.2),transparent)"':"")):""}>${o}</button>`).join("") +
+      (q.why?`<details><summary>Why?</summary><p>${q.why}</p></details>`:"");
+    wrap.appendChild(box);
+    box.querySelectorAll(".qopt").forEach(btn=>{
+      btn.onclick=()=>{
+        const chosen=+btn.dataset.i;
+        stored[i]=chosen; S.qResults[storeKey]=stored; save();
+        box.querySelectorAll(".qopt").forEach((b,j)=>{b.disabled=true;
+          if(j===q.a)b.classList.add("correct");
+          if(j===chosen&&chosen!==q.a)b.classList.add("wrong");});
+        updateScoreDay(s,w,day,qs);
+      };
+    });
+  });
+  updateScoreDay(s,w,day,qs);
+}
+function updateScoreDay(s,w,day,qs){
+  const stored=S.qResults[kyD(s,w,day)]||{};
+  let correct=0, done=0;
+  qs.forEach((q,i)=>{if(stored[i]!=null){done++;if(stored[i]===q.a)correct++}});
+  const el=document.getElementById(`qscore-${s}-${w}-${day}`);
+  if(el) el.innerHTML = `Score: <span style="color:${correct===qs.length&&qs.length>0?'var(--rb-yellow)':'var(--rb-red)'}">${correct} / ${qs.length}</span> (attempted ${done})`;
 }
 
 function renderQuiz(s,w,qs){
@@ -582,12 +865,20 @@ function renderSubject(v,s){
     <h2><span class="subj-tag" style="background:${subj.color}"></span>${subj.name}</h2>
     <p><b>Term task:</b> ${subj.task}</p>
     <h3>Outcomes assessed</h3><ul>${subj.outcomes.map(o=>`<li>${o}</li>`).join("")}</ul></div>`;
-  html+=`<div class="card"><h3>10-week roadmap</h3>`;
-  (LESSONS[s]||[]).forEach((L,i)=>{const w=i+1,d=isDone(s,w);
-    html+=`<div class="sess ${d?'done':''}" onclick="openLesson('${s}',${w})">
+  html+=`<div class="card"><h3>10-week roadmap</h3>
+    <p><small style="color:var(--mut)">Each week has 3 sessions (Day A/B/C) across different weekdays. Click a week to jump to that day's schedule.</small></p>`;
+  (LESSONS[s]||[]).forEach((L,i)=>{
+    const w=i+1;
+    const nDone = ['A','B','C'].filter(d=>isDoneDay(s,w,d)).length;
+    const cls = nDone===3?'done':'';
+    html+=`<div class="sess ${cls}" onclick="S.current={view:'week',week:${w}};render()">
       <span class="subj">Week ${w}: ${L.title}</span>
-      <div class="top"><span class="pill ${L.diff}">${L.diff==='easy'?'Foundation':L.diff==='mid'?'Stage 5.1':'Stage 5.2'}</span>
-      ${(L.outcomes||[]).map(o=>`<span class="pill">${o}</span>`).join(" ")}</div></div>`});
+      <div class="top">
+        <span class="pill ${L.diff}">${L.diff==='easy'?'Foundation':L.diff==='mid'?'Stage 5.1':'Stage 5.2'}</span>
+        <span class="pill">${nDone}/3 days</span>
+        ${(L.outcomes||[]).map(o=>`<span class="pill">${o}</span>`).join(" ")}
+      </div></div>`;
+  });
   html+=`</div>`;
   v.innerHTML=html;
 }
@@ -597,10 +888,37 @@ function renderSubject(v,s){
 // ============================================================================
 function renderDashboard(v){
   let done=0,correct=0,attempted=0,total=0;
-  for(const s of Object.keys(SUBJECTS))for(let w=1;w<=10;w++){total++;if(isDone(s,w))done++;
-    const r=S.qResults[ky(s,w)]||{};const L=LESSONS[s][w-1];if(!L)continue;
-    (L.quiz||[]).forEach((q,i)=>{if(r[i]!=null){attempted++;if(r[i]===q.a)correct++}});}
-  let html=`<div class="card"><h2>🏆 Championship Standings</h2><div class="speedbar"></div>
+  for(const s of Object.keys(SUBJECTS)) for(let w=1;w<=10;w++) for(const day of ['A','B','C']){
+    total++;
+    if(isDoneDay(s,w,day)) done++;
+    const r=S.qResults[kyD(s,w,day)]||{};
+    const meta=DAY_META[day]; const L=LESSONS[s][w-1]; if(!L) continue;
+    const daySlice = meta.qSlice.map(i=>(L.quiz||[])[i]).filter(Boolean);
+    daySlice.forEach((q,i)=>{ if(r[i]!=null){attempted++; if(r[i]===q.a) correct++} });
+  }
+  let html=`<div class="card"><h2>🏆 Championship Standings</h2>
+    <div class="speedbar"></div>
+    <div class="marquee-track" aria-hidden="true">
+      <div class="hero-car">
+        <svg viewBox="0 0 140 60" class="body" width="140" height="56" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="70" cy="56" rx="55" ry="3" fill="#000" opacity=".4"/>
+          <rect x="4" y="18" width="14" height="18" rx="2" fill="#0a0e2e" stroke="#ed1a3b" stroke-width="1.2"/>
+          <rect x="2" y="16" width="18" height="3" fill="#ed1a3b"/>
+          <path d="M18 40 L30 26 L92 24 L118 30 L124 40 L118 48 L26 48 Z" fill="#0a0e2e" stroke="#1e41ff" stroke-width="1"/>
+          <path d="M30 26 L92 24 L96 30 L34 32 Z" fill="#ed1a3b"/>
+          <path d="M20 38 L118 34 L118 40 L20 44 Z" fill="#ffc906" opacity=".85"/>
+          <path d="M56 24 Q62 12 78 12 Q90 12 92 22" stroke="#000" stroke-width="2.5" fill="none"/>
+          <ellipse cx="72" cy="22" rx="14" ry="6" fill="#000"/>
+          <text x="70" y="38" text-anchor="middle" font-family="Racing Sans One, sans-serif" font-size="12" fill="#ffc906" font-weight="900">1</text>
+          <rect x="118" y="36" width="18" height="10" rx="2" fill="#0a0e2e" stroke="#ed1a3b" stroke-width="1"/>
+          <rect x="126" y="34" width="10" height="3" fill="#ed1a3b"/>
+          <circle class="wheel" cx="34" cy="48" r="8" fill="#111" stroke="#333" stroke-width="1.5"/>
+          <circle cx="34" cy="48" r="3" fill="#666"/>
+          <circle class="wheel" cx="110" cy="48" r="8" fill="#111" stroke="#333" stroke-width="1.5"/>
+          <circle cx="110" cy="48" r="3" fill="#666"/>
+        </svg>
+      </div>
+    </div>
     <div class="stat">
       <div><b>${done}</b><small style="color:var(--mut);letter-spacing:1px;text-transform:uppercase">Laps completed</small><br><small>of ${total}</small></div>
       <div><b>${correct}</b><small style="color:var(--mut);letter-spacing:1px;text-transform:uppercase">Fastest laps</small></div>
@@ -608,12 +926,13 @@ function renderDashboard(v){
       <div><b>${overallPct()}%</b><small style="color:var(--mut);letter-spacing:1px;text-transform:uppercase">Season</small></div>
     </div></div>`;
   for(const[id,subj]of Object.entries(SUBJECTS)){
-    let sd=0;for(let w=1;w<=10;w++)if(isDone(id,w))sd++;
-    const pct=Math.round(sd/10*100);
+    let sd=0, tot=0;
+    for(let w=1;w<=10;w++) for(const day of ['A','B','C']){tot++; if(isDoneDay(id,w,day)) sd++;}
+    const pct=Math.round(sd/tot*100);
     html+=`<div class="card">
       <h3><span class="subj-tag" style="background:${subj.color}"></span>${subj.name}</h3>
       <div class="progress"><div style="width:${pct}%"></div></div>
-      <small>${sd} of 10 weeks — ${pct}%</small></div>`;
+      <small>${sd} of ${tot} day-sessions — ${pct}%</small></div>`;
   }
   v.innerHTML=html;
 }
@@ -677,21 +996,24 @@ function renderMathDrill(v){
 // ASSESSMENTS OVERVIEW
 // ============================================================================
 function renderAssessments(v){
-  let html=`<div class="card"><h2>✅ Outcome checks</h2>
-    <p>Every topic has 10 assessment questions. Track your score per subject and per NESA outcome.</p></div>`;
+  let html=`<div class="card"><h2>✅ Telemetry — Outcome checks</h2>
+    <p>Each week's 10 questions are split across the 3 daily sessions. Track score per week and per NESA outcome.</p></div>`;
   for(const[id,subj]of Object.entries(SUBJECTS)){
     html+=`<div class="card"><h3><span class="subj-tag" style="background:${subj.color}"></span>${subj.name}</h3>`;
-    let tCorrect=0,tTotal=0;
     const byOutcome={};
     (LESSONS[id]||[]).forEach((L,wi)=>{
-      const r=S.qResults[ky(id,wi+1)]||{};
-      let c=0,a=0;(L.quiz||[]).forEach((q,i)=>{if(r[i]!=null){a++;if(r[i]===q.a){c++;tCorrect++}}tTotal+=r[i]!=null?1:0});
-      tCorrect+=0;
-      (L.outcomes||[]).forEach(o=>{if(!byOutcome[o])byOutcome[o]={c:0,t:0};byOutcome[o].c+=c;byOutcome[o].t+=(L.quiz||[]).length});
-      const pct=(L.quiz||[]).length?Math.round(c/(L.quiz||[]).length*100):0;
+      const totalQ=(L.quiz||[]).length;
+      let c=0,a=0;
+      ['A','B','C'].forEach(day=>{
+        const r=S.qResults[kyD(id,wi+1,day)]||{};
+        const daySlice=DAY_META[day].qSlice.map(i=>(L.quiz||[])[i]).filter(Boolean);
+        daySlice.forEach((q,i)=>{if(r[i]!=null){a++;if(r[i]===q.a)c++}});
+      });
+      (L.outcomes||[]).forEach(o=>{if(!byOutcome[o])byOutcome[o]={c:0,t:0};byOutcome[o].c+=c;byOutcome[o].t+=totalQ});
+      const pct=totalQ?Math.round(c/totalQ*100):0;
       html+=`<div style="margin:6px 0"><b>W${wi+1} · ${L.title}</b>
         <div class="progress"><div style="width:${pct}%"></div></div>
-        <small>${c}/${(L.quiz||[]).length} correct · attempted ${a}</small></div>`;
+        <small>${c}/${totalQ} correct · attempted ${a}</small></div>`;
     });
     html+=`<h3>By outcome</h3>`;
     for(const[o,r]of Object.entries(byOutcome)){
@@ -709,6 +1031,19 @@ function renderAssessments(v){
 // RESET + SELF-TEST
 // ============================================================================
 function resetAll(){if(!confirm("Wipe all progress?"))return;localStorage.clear();S.done={};S.qResults={};render()}
+// Migrate legacy v2 keys once (if user had old data, keep it as Day-A completion so nothing's lost)
+(function migrate(){
+  const oldDone = JSON.parse(localStorage.getItem("done_v2")||"null");
+  const oldQ    = JSON.parse(localStorage.getItem("qres_v2")||"null");
+  if(oldDone && !Object.keys(S.done).length){
+    Object.entries(oldDone).forEach(([k,v])=>{ if(v) S.done[k+"-A"]=true; });
+    localStorage.setItem("done_v3",JSON.stringify(S.done));
+  }
+  if(oldQ && !Object.keys(S.qResults).length){
+    Object.entries(oldQ).forEach(([k,v])=>{ S.qResults[k+"-A"] = v; });
+    localStorage.setItem("qres_v3",JSON.stringify(S.qResults));
+  }
+})();
 
 function selfTest(){
   console.assert(Object.keys(SUBJECTS).length===4,"4 subjects expected");
